@@ -72,6 +72,12 @@ enum custom_keycodes {
     A_RING = SAFE_RANGE,
     A_UM,
     O_UM,
+    CURSOR,
+    INTELLIJ,
+    ARC,
+    SLACK,
+    ITERM,
+    LOGSEQ
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -100,6 +106,54 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     send_unicode_string("ö");
                 }
                 return false;
+            case CURSOR:
+              register_code(KC_LGUI);
+              tap_code(KC_SPACE);
+              unregister_code(KC_LGUI);
+              wait_ms(200);
+              send_string("cursor");
+              tap_code(KC_ENTER);
+              return false;
+            case INTELLIJ:
+              register_code(KC_LGUI);
+              tap_code(KC_SPACE);
+              unregister_code(KC_LGUI);
+              wait_ms(200);
+              send_string("intellij");
+              tap_code(KC_ENTER);
+              return false;
+            case ARC:
+              register_code(KC_LGUI);
+              tap_code(KC_SPACE);
+              unregister_code(KC_LGUI);
+              wait_ms(200);
+              send_string("arc");
+              tap_code(KC_ENTER);
+              return false;
+            case ITERM:
+              register_code(KC_LGUI);
+              tap_code(KC_SPACE);
+              unregister_code(KC_LGUI);
+              wait_ms(200);
+              send_string("iterm");
+              tap_code(KC_ENTER);
+              return false;
+            case SLACK:
+              register_code(KC_LGUI);
+              tap_code(KC_SPACE);
+              unregister_code(KC_LGUI);
+              wait_ms(200);
+              send_string("slack");
+              tap_code(KC_ENTER);
+              return false;
+            case LOGSEQ:
+              register_code(KC_LGUI);
+              tap_code(KC_SPACE);
+              unregister_code(KC_LGUI);
+              wait_ms(200);
+              send_string("logseq");
+              tap_code(KC_ENTER);
+              return false;
         }
     }
     return true;
@@ -132,20 +186,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * Nav Layer
  *
- * ,----------------------------------.          ,----------------------------------.
- * |      |      |      |      |      |          | Redo | Paste| Copy |  Cut | Undo |
- * |------+------+------+------+------|          |------+------+------+------+------|
- * | Cmd  |  Alt | Ctrl | Shift|      |          |CapsLk|  <-  |   ↑  |   ↓  |  ->  |
- * |------+------+------+------+------+          +------+------+------+------+------|
- * |      |      |      |      |      |          |Insert| Home | PgDn | PgUp | End  |
- * `-------------+------+------+------+---|   |--+------+------+------+-------------'
- *                   |      | ████ |      |   | Enter| Bksp | Del  |
- *                   ---------------------'   ---------------------'
+ * ,------------------------------------.          ,----------------------------------.
+ * | Slack| Iterm|Cursor|IntelliJ|  Arc |          | Redo | Paste| Copy |  Cut | Undo |
+ * |------+------+------+--------+------|          |------+------+------+------+------|
+ * | Cmd  |  Alt | Ctrl | Shift  |LogSeq|          |CapsLk|  <-  |   ↑  |   ↓  |  ->  |
+ * |------+------+------+--------+------+          +------+------+------+------+------|
+ * |      |      |      |        |      |          |Insert| Home | PgDn | PgUp | End  |
+ * `-------------+------+--------+------+---|   |--+------+------+------+-------------'
+ *                   |      | █████  |      |   | Enter| Bksp | Del  |
+ *                   -----------------------'   ---------------------'
  */
     [_NAV] = LAYOUT(
-      KC_NO, U_NA,              KC_NO,             KC_NO,             TD(TD_BASE_SWITCH),U_NA,                                 REDO,              PASTE,             COPY,              CUT,               UNDO,      KC_NO,         \
-      KC_NO, KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           U_NA,                                 CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,   KC_NO,         \
-      KC_NO, U_NA,              KC_ALGR,           TD(TD_NUM_SWITCH), TD(TD_NAV_SWITCH), U_NA,   KC_NO,KC_NO, KC_NO,KC_NO,     KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,    KC_NO,         \
+      KC_NO, SLACK,             ITERM,             CURSOR,            INTELLIJ,          ARC,                                  REDO,              PASTE,             COPY,              CUT,               UNDO,      KC_NO,         \
+      KC_NO, KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           LOGSEQ,                               CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,   KC_NO,         \
+      KC_NO, U_NA,              TD(TD_BASE_SWITCH),TD(TD_NUM_SWITCH), TD(TD_NAV_SWITCH), U_NA,   KC_NO,KC_NO, KC_NO,KC_NO,     KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,    KC_NO,         \
                                             KC_NO, U_NA,              U_NA,              U_NA,    KC_NO, KC_NO,       KC_ENT,            KC_BSPC,           KC_DEL, KC_NO
     ),
 
