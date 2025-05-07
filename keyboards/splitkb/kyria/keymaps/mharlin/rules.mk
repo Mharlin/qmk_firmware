@@ -6,3 +6,4 @@ TAP_DANCE_ENABLE = yes     # Enable tap dance
 UNICODE_ENABLE = yes       # Enable Unicode input
 UNICODE_MAP_ENABLE = yes   # Enable Unicode map
 UNICODE_COMMON = yes       # Enable common Unicode characters
+MOUSEKEY_ENABLE = yes      # Enable mouse keys
