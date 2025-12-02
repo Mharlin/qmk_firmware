@@ -76,8 +76,9 @@ enum custom_keycodes {
     INTELLIJ,
     ZEN,
     SLACK,
-    WARP,
-    LOGSEQ
+    GHOSTTY,
+    LOGSEQ,
+    CLAUDE
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -135,12 +136,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               send_string("zen");
               tap_code(KC_ENTER);
               return false;
-            case WARP:
+            case GHOSTTY:
               register_code(KC_LGUI);
               tap_code(KC_SPACE);
               unregister_code(KC_LGUI);
               wait_ms(200);
-              send_string("warp");
+              send_string("ghostty");
               tap_code(KC_ENTER);
               return false;
             case SLACK:
@@ -157,6 +158,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               unregister_code(KC_LGUI);
               wait_ms(200);
               send_string("logseq");
+              tap_code(KC_ENTER);
+              return false;
+            case CLAUDE:
+              register_code(KC_LGUI);
+              tap_code(KC_SPACE);
+              unregister_code(KC_LGUI);
+              wait_ms(200);
+              send_string("claude");
               tap_code(KC_ENTER);
               return false;
         }
@@ -191,20 +200,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /*
  * Nav Layer
  *
- * ,------------------------------------.          ,----------------------------------.
- * | Slack| Warp |VsCode|IntelliJ|  Zen |          | Redo | Paste| Copy |  Cut | Undo |
- * |------+------+------+--------+------|          |------+------+------+------+------|
- * | Cmd  |  Alt | Ctrl | Shift  |LogSeq|          |CapsLk|  <-  |   ↑  |   ↓  |  ->  |
- * |------+------+------+--------+------+          +------+------+------+------+------|
- * |      |      |      |        |      |          |Insert| Home | PgDn | PgUp | End  |
- * `-------------+------+--------+------+---|   |--+------+------+------+-------------'
+ * ,-------------------------------------.          ,----------------------------------.
+ * | Slack|Ghostty|VsCode|IntelliJ|  Zen |          | Redo | Paste| Copy |  Cut | Undo |
+ * |------+-------+------+--------+------|          |------+------+------+------+------|
+ * | Cmd  |  Alt  | Ctrl | Shift  |LogSeq|          |CapsLk|  <-  |   ↑  |   ↓  |  ->  |
+ * |------+-------+------+--------+------+          +------+------+------+------+------|
+ * |      |       |      |        |Claude|          |Insert| Home | PgDn | PgUp | End  |
+ * `--------------+------+--------+------+---|   |--+------+------+------+-------------'
  *                   |      | █████  |      |   | Enter| Bksp | Del  |
  *                   -----------------------'   ---------------------'
  */
     [_NAV] = LAYOUT(
-      KC_NO, SLACK,             WARP,              VSCODE,            INTELLIJ,          ZEN,                                  REDO,              PASTE,             COPY,              CUT,               UNDO,      KC_NO,         \
+      KC_NO, SLACK,             GHOSTTY,           VSCODE,            INTELLIJ,          ZEN,                                  REDO,              PASTE,             COPY,              CUT,               UNDO,      KC_NO,         \
       KC_NO, KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           LOGSEQ,                               CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,   KC_NO,         \
-      KC_NO, U_NA,              TD(TD_BASE_SWITCH),TD(TD_NUM_SWITCH), TD(TD_NAV_SWITCH), U_NA,   KC_NO,KC_NO, KC_NO,KC_NO,     KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,    KC_NO,         \
+      KC_NO, U_NA,              TD(TD_BASE_SWITCH),TD(TD_NUM_SWITCH), TD(TD_NAV_SWITCH), CLAUDE, KC_NO,KC_NO, KC_NO,KC_NO,     KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,    KC_NO,         \
                                             KC_NO, U_NA,              U_NA,              U_NA,    KC_NO, KC_NO,       KC_ENT,            KC_BSPC,           KC_DEL, KC_NO
     ),
 
