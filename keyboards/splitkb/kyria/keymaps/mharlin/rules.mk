@@ -7,3 +7,4 @@ UNICODE_ENABLE = yes       # Enable Unicode input
 UNICODE_MAP_ENABLE = yes   # Enable Unicode map
 UNICODE_COMMON = yes       # Enable common Unicode characters
 MOUSEKEY_ENABLE = yes      # Enable mouse keys
+CAPS_WORD_ENABLE = yes     # Enable Caps Word

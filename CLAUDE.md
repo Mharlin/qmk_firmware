@@ -14,6 +14,9 @@ qmk compile -kb splitkb/kyria/rev1 -km mharlin
 qmk flash -kb splitkb/kyria/rev1 -km mharlin
 ```
 
+## Explaining key positions
+When telling me which key to press for a given keycode, identify it by the letter/symbol on the same physical position on the base layer (`_BASE`), plus which layer it's actually on — e.g. "the M-key position, on the Nav layer" — not just the keycode name.
+
 ## Keeping docs in sync
 When changing `keymap.c` or `config.h`, update `keyboards/splitkb/kyria/keymaps/mharlin/readme.md` in the same change (layers, tap dance behavior, features) — it has drifted out of sync with the actual keymap in the past.
 
