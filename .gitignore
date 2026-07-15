@@ -5,6 +5,9 @@
 .DS_Store
 ._*
 
+# Local git worktrees
+.worktrees/
+
 # Merge files
 *.orig
 *.rej

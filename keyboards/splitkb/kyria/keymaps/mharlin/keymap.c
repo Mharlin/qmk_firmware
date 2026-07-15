@@ -49,7 +49,67 @@ enum {
     TD_MEDIA_SWITCH,
     TD_SYM_SWITCH,
     TD_FUN_SWITCH,
+    TD_DEL_FN,
 };
+
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD,
+    TD_DOUBLE_TAP
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
+
+static td_tap_t del_fn_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+td_state_t cur_dance(tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) return TD_SINGLE_TAP;
+        else return TD_SINGLE_HOLD;
+    } else if (state->count == 2) {
+        return TD_DOUBLE_TAP;
+    }
+    return TD_UNKNOWN;
+}
+
+void del_fn_finished(tap_dance_state_t *state, void *user_data) {
+    del_fn_tap_state.state = cur_dance(state);
+    switch (del_fn_tap_state.state) {
+        case TD_SINGLE_TAP:
+            tap_code(KC_DEL);
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(_FUN);
+            break;
+        case TD_DOUBLE_TAP:
+            register_code(KC_F13);
+            break;
+        default:
+            break;
+    }
+}
+
+void del_fn_reset(tap_dance_state_t *state, void *user_data) {
+    switch (del_fn_tap_state.state) {
+        case TD_SINGLE_HOLD:
+            layer_off(_FUN);
+            break;
+        case TD_DOUBLE_TAP:
+            unregister_code(KC_F13);
+            break;
+        default:
+            break;
+    }
+    del_fn_tap_state.state = TD_NONE;
+}
 
 tap_dance_action_t tap_dance_actions[] = {
     [TD_BASE_SWITCH] = ACTION_TAP_DANCE_DOUBLE(KC_TRNS, TO(_BASE)),
@@ -60,6 +120,7 @@ tap_dance_action_t tap_dance_actions[] = {
     [TD_MEDIA_SWITCH] = ACTION_TAP_DANCE_DOUBLE(KC_TRNS, TO(_MEDIA)),
     [TD_SYM_SWITCH] = ACTION_TAP_DANCE_DOUBLE(KC_TRNS, TO(_SYM)),
     [TD_FUN_SWITCH] = ACTION_TAP_DANCE_DOUBLE(KC_TRNS, TO(_FUN)),
+    [TD_DEL_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, del_fn_finished, del_fn_reset),
 };
 
 #define REDO LGUI(LSFT(KC_Z))
@@ -188,13 +249,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-------------+------+------+------+---|   |--+------+------+------+-------------'
  *                   | Media| Nav  | Mouse|   | Sym  | Num  | Fun  |
  *                   | Esc  | Space| Tab  |   | Enter| Bksp | Del  |
+ *                   |      |      |      |   |      |      | Fn   |
  *                   ---------------------'   ---------------------'
  */
     [_BASE] = LAYOUT(
       KC_NO, KC_Q,              KC_W,              KC_F,              KC_P,              KC_B,                                          KC_J,   KC_L,              KC_U,              KC_Y,              KC_QUOT,            KC_NO,   \
       KC_NO, LGUI_T(KC_A),      LALT_T(KC_R),      LCTL_T(KC_S),      LSFT_T(KC_T),      KC_G,                                          KC_M,   LSFT_T(KC_N),      LCTL_T(KC_E),      LALT_T(KC_I),      LGUI_T(KC_O),       KC_NO,   \
       KC_NO, LT(BUTTON,KC_Z),   ALGR_T(KC_X),      KC_C,              KC_D,              KC_V,               KC_NO,KC_NO, KC_NO,KC_NO,  KC_K,   KC_H,              KC_COMM,           ALGR_T(KC_DOT),    LT(BUTTON,KC_SLSH), KC_NO, \
-                                                                 KC_NO, LT(MEDIA,KC_ESC),LT(NAV,KC_SPC),   LT(MOUSE,KC_TAB), KC_NO, KC_NO,   LT(SYM,KC_ENT),  LT(NUM,KC_BSPC), LT(FUN,KC_DEL), KC_NO
+                                                                 KC_NO, LT(MEDIA,KC_ESC),LT(NAV,KC_SPC),   LT(MOUSE,KC_TAB), KC_NO, KC_NO,   LT(SYM,KC_ENT),  LT(NUM,KC_BSPC), TD(TD_DEL_FN),  KC_NO
     ),
 
 /*
